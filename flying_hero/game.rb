@@ -1,6 +1,7 @@
 require "gosu"
 require_relative "background"
 require_relative "hero"
+require_relative "candy"
 
 class Game < Gosu::Window
   def initialize
@@ -8,11 +9,13 @@ class Game < Gosu::Window
     self.caption = "Flying hero!"
     @background = Background.new
     @hero = Hero.new
+    @candy = Candy.new(self)
   end
 
   def draw
     @background.draw
     @hero.draw
+    @candy.draw
   end
 
   def button_down(id)
@@ -28,6 +31,10 @@ class Game < Gosu::Window
     if button_down?(Gosu::KbUp) 
       @hero.move_up! if @hero.y >=0
     end
+    @candy.move!
+    if @candy.x < 0
+       @candy.reset!(self)
+    end 
 
   end
 end
